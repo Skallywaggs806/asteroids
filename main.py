@@ -8,7 +8,12 @@ from asteroidfield import AsteroidField
 from shot import Shot
 
 
+
 def main():
+
+    with open("highscore.txt", "r") as file:
+        HIGH_SCORE = int(file.read())
+
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -30,6 +35,7 @@ def main():
     asteroid_field = AsteroidField()
 
     score = 0
+
     
     while True:
         for event in pygame.event.get():
@@ -42,6 +48,12 @@ def main():
         for asteroid in asteroids:
             if asteroid.collides_with(player):
                 print(f"Game over! Score: {score}")
+                if score > HIGH_SCORE:
+                    print(f"New high score: {score}")
+                    with open('highscore.txt', 'w') as file:
+                        file.write(f"{score}")
+                else:
+                    print(f"High score: {HIGH_SCORE}")
                 sys.exit()
             for shot in shots:
                 if asteroid.collides_with(shot):
@@ -60,6 +72,10 @@ def main():
     print("Starting asteroids!")
     print(f"Screen Width: {SCREEN_WIDTH}")
     print(f"Screen Height: {SCREEN_HEIGHT}")
+
+
+
+
 
 
 
